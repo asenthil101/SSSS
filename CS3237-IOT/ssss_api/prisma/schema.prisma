@@ -1,0 +1,67 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// model User {
+//   id    Int     @default(autoincrement()) @id
+//   email String  @unique
+//   name  String?
+//   posts Post[]
+// }
+
+// model Post {
+//   id        Int      @default(autoincrement()) @id
+//   title     String
+//   content   String?
+//   published Boolean? @default(false)
+//   author    User?    @relation(fields: [authorId], references: [id])
+//   authorId  Int?
+// }
+
+// Main model of out application an authorized user
+model User {
+   id        Int      @default(autoincrement()) @id
+   username  String @unique
+   phone     String?
+   cardNumber String?
+   photos   PhotoLog[] 
+   registeredAt DateTime @default(now())
+   active    Boolean @default(true)
+   faceEmbeddings Json?
+}
+
+model PhotoLog{
+    id        Int      @default(autoincrement()) @id
+    url       String @unique
+    user      User? @relation(fields: [userId], references: [id])
+    time     DateTime @default(now())
+    userId    Int?
+    createdAt DateTime @default(now())
+}
+
+model BreakingLog{
+    id        Int      @default(autoincrement()) @id
+    url       String
+    time     DateTime @default(now())
+    userId    Int?
+}
+
+model Vault{
+  id       Int      @default(autoincrement()) @id
+  lat     Float
+  lng     Float
+  status  Boolean @default(true)
+  createdAt DateTime @default(now())
+}
+
+
+
+
